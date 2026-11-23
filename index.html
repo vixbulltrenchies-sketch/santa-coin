@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Santa Coin</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(180deg,#450707,#160202);
+color:white;
+text-align:center;
+}
+header{
+padding:20px;
+font-size:25px;
+font-weight:bold;
+color:#ffd700;
+}
+.container{max-width:480px;margin:auto;padding:15px}
+.card{
+background:#700f12;
+border:1px solid #b8860b;
+border-radius:18px;
+padding:20px;
+margin-bottom:15px;
+}
+.coin{
+width:180px;height:180px;
+margin:20px auto;
+border-radius:50%;
+background:radial-gradient(circle,#fff1a8,#ffd700,#b8860b);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:80px;
+box-shadow:0 0 30px #ffd700;
+cursor:pointer;
+user-select:none;
+transition:transform .08s;
+}
+.coin:active{transform:scale(.92)}
+.balance{font-size:35px;color:#ffd700;font-weight:bold}
+button{
+border:0;
+padding:14px;
+border-radius:12px;
+background:#ffd700;
+color:#4b0909;
+font-weight:bold;
+width:100%;
+font-size:16px;
+margin-top:10px;
+cursor:pointer;
+}
+nav{
+display:flex;
+justify-content:space-around;
+background:#260404;
+padding:15px;
+position:sticky;
+bottom:0;
+}
+nav span{cursor:pointer}
+.task{background:#510a0c;padding:15px;border-radius:12px;margin:10px 0;text-align:left}
+.small{color:#ffdf9e}
+</style>
+</head>
+<body>
+<header>🎅 SANTA COIN 🎄</header>
+<div class="container">
+
+<div class="card">
+<h3>Your Balance</h3>
+<div class="balance" id="balance">0</div>
+<p class="small">SANTA POINTS</p>
+</div>
+
+<div class="coin" id="coin">🎅</div>
+<p>Tap Santa to collect coins!</p>
+
+<div class="card">
+<h3>⚡ Energy</h3>
+<div id="energy">1000</div>
+<button id="daily">🎁 Claim Daily Reward</button>
+</div>
+
+<div class="card">
+<h3>📋 Social Tasks</h3>
+<div class="task">
+<b>YouTube</b><br>
+<span class="small">Subscribe to our channel</span>
+<button onclick="openTask('youtube')">Visit YouTube</button>
+</div>
+
+<div class="task">
+<b>X</b><br>
+<span class="small">Follow us on X</span>
+<button onclick="openTask('x')">Visit X</button>
+</div>
+
+<div class="task">
+<b>Telegram</b><br>
+<span class="small">Join our Telegram channel</span>
+<button onclick="openTask('telegram')">Join Telegram</button>
+</div>
+
+<div class="task">
+<b>WhatsApp</b><br>
+<span class="small">Join our WhatsApp community</span>
+<button onclick="openTask('whatsapp')">Join WhatsApp</button>
+</div>
+</div>
+
+<div class="card">
+<h3>🏆 Leaderboard</h3>
+<p>Compete with Santa Coin players!</p>
+<p>Coming soon</p>
+</div>
+
+<div class="card">
+<h3>🎄 Airdrop Countdown</h3>
+<p>Campaign: December 1–30, 2026</p>
+</div>
+
+</div>
+
+<nav>
+<span onclick="window.scrollTo(0,0)">🏠 Home</span>
+<span onclick="document.querySelector('.card:nth-of-type(3)').scrollIntoView()">📋 Tasks</span>
+<span onclick="alert('Leaderboard coming soon!')">🏆 Ranking</span>
+</nav>
+
+<script>
+let balance=Number(localStorage.getItem("santa_balance")||0);
+let energy=Number(localStorage.getItem("santa_energy")||1000);
+let lastDaily=localStorage.getItem("santa_daily")||"";
+
+function update(){
+document.getElementById("balance").innerText=balance.toLocaleString();
+document.getElementById("energy").innerText=energy;
+localStorage.setItem("santa_balance",balance);
+localStorage.setItem("santa_energy",energy);
+}
+
+document.getElementById("coin").onclick=function(){
+if(energy>0){
+balance+=1;
+energy-=1;
+update();
+}
+};
+
+document.getElementById("daily").onclick=function(){
+let today=new Date().toDateString();
+if(lastDaily===today){
+alert("You already claimed today's reward!");
+return;
+}
+balance+=500;
+lastDaily=today;
+localStorage.setItem("santa_daily",today);
+update();
+alert("🎁 500 Santa points claimed!");
+};
+
+function openTask(platform){
+let links={
+youtube:"https://youtube.com/",
+x:"https://x.com/",
+telegram:"https://telegram.org/",
+whatsapp:"https://whatsapp.com/"
+};
+window.open(links[platform],"_blank");
+}
+
+update();
+</script>
+</body>
+</html>
